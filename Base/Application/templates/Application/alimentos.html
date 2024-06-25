@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script> 
+    <link rel="stylesheet" href="{%static 'Application/css/estilos.css'%}"/> <!--Importar estilos de otro archivo--> 
+    <script src="https://kit.fontawesome.com/165547e65c.js" crossorigin="anonymous"></script> <!-- Importando Iconos -->
+    <title>Alimentos</title>
+</head>
+<body background="{%static 'Application/pics/bkgd.png'%}">
+    <header>
+        <!--Header/Cabecera-->
+        <!--Video Contexto: https://www.youtube.com/watch?v=OuoLQiXPitk-->
+
+        <div class ="logo"> 
+            <img src="{%static 'Application/pics/logo.png'%}" alt="logo de la pagina">
+            <h2 class="nombre-empresa">Dog Lover</h2>
+        </div>    
+        <nav>
+            <ul>
+            <li><a href="{%url 'servicios'%}" class="nav-link">Servicios</a></li>
+            <li>
+                <a>Productos</a>
+                <ul class="dropdown">
+                <li><a href="{%url 'accesorios'%}" class="nav-link">Accesorios</a></li>
+                <li><a>Alimentos</a></li>
+                </ul>
+            </li>
+            <li><a href="{%url 'about'%}" class="nav-link">Nosotros</a></li>
+			{% if user.is_authenticated %}
+                    <li>
+                        <a>{{ user.username }}</a>
+                        <ul class="dropdown">
+                            {% if user.is_staff %}
+                                <li><a href="{% url 'admin:index' %}" class="nav-link">Panel de Admin</a></li>
+                                <li><a href="{% url 'fichas' %}" class="nav-link">Revisar Fichas</a></li>
+                                <li><a href="{% url 'user_list' %}" class="nav-link">Gestionar Usuarios</a></li>
+                                <li><a href="{%url 'lista_productos'%}" class="nav-link">Gestionar Productos</a></li>
+                            {% else %}
+                                <li><a href="" class="nav-link">Mi Carrito</a></li>
+                                <li><a href="{%url 'perfil_usuario'%}" class="nav-link">Mi Perfil</a></li>
+                            {% endif %}
+                            <li>
+                                <form method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="nav-link">Cerrar Sesion</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login_view' %}">Login</a></li>
+                {% endif %}
+            </ul>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Titulo y Parrafos -->
+	<center>
+        <h1 class="titulo_blanco">Alimentos</h1>
+			<div class="text-transparent">
+				<p> No sabes cómo calcular la cantidad adecuada de alimento para tu peludo compañero? ¡Descubre la respuesta con nuestra práctica calculadora de porciones!</p>
+				<a href="{%url 'calc'%}">>>Haz Click Aqui!<<</a>
+				<p>&nbsp;</p>
+			</div>
+	</center>
+<!--Productos(CELDAS)-->          
+<div class="container">
+
+	<div class="products-container">
+ 
+	   <div class="product" data-name="p-1"> <!-- ID, funciona en tandem con el script de "Script 2"-->
+		  <img src="{%static 'Application/pics/ali1.png'%}" alt="">
+		  <h3>Pedigree Cachorro Etapa 2</h3>
+		  <div class="price">20,000 CLP</div>
+	   </div>
+ 
+	   <div class="product" data-name="p-2">
+		  <img src="{%static 'Application/pics/ali2.png'%}" alt="">
+		  <h3>Trocitos Pedigree Adulto</h3>
+		  <div class="price">3,000 CLP</div>
+	   </div>
+ 
+	   <div class="product" data-name="p-3">
+		  <img src="{%static 'Application/pics/ali3.png'%}" alt="">
+		  <h3>Pedigree Senior Etapa 3</h3>
+		  <div class="price">15,000 CLP</div>
+	   </div>
+ 
+	   <div class="product" data-name="p-4">
+		  <img src="{%static 'Application/pics/ali4.png'%}" alt="">
+		  <h3>Filhotes Cachorro Pedigree</h3>
+		  <div class="price"> 9,000 CLP</div>
+	   </div>
+ 
+	   <div class="product" data-name="p-5">
+		  <img src="{%static 'Application/pics/ali5.png'%}" alt="">
+		  <h3>Pedigree Cachoro Etapa 1</h3>
+		  <div class="price">15,000 CLP</div>
+	   </div>
+ 
+	   <div class="product" data-name="p-6">
+		  <img src="{%static 'Application/pics/ali6.png'%}" alt="">
+		  <h3>Churu INABA</h3>
+		  <div class="price">5,000 CLP</div>
+	   </div>
+	</div>
+ </div>
+ <!--POP UPS-->
+ <div class="products-preview">
+ 
+	<div class="preview" data-target="p-1">  <!-- ID, funciona en tandem con el script de "Script 2"-->
+	   <i class="fas fa-times"></i> <!--Boton para cerrar Pop up-->
+	   <h3>Pedigree Cachorro Etapa 2</h3>
+	   <p>Alimento pedigree para cachorros, Etapa 2.</p>
+	   <div class="price">20,000CLP</div>
+	   <div class="buttons">
+		  <a href="{% url 'alimentos'%}" class="buy">Comprar</a>
+	   </div>
+	</div>
+
+	<div class="preview" data-target="p-2">
+		<i class="fas fa-times"></i> <!--Boton para cerrar Pop up-->
+		<h3>Trocitos Pedigree Adulto</h3>
+		<p>Alimento pedigree para Caninos Adultos, Etapa 3.</p>
+		<div class="price">3,000CLP</div>
+		<div class="buttons">
+		   <a href="{% url 'alimentos'%}" class="buy">Comprar</a>
+		</div>
+	 </div>
+
+	 <div class="preview" data-target="p-3">
+		<i class="fas fa-times"></i> <!--Boton para cerrar Pop up-->
+		<h3>Pedigree Senior Etapa 3 </h3>
+		<p>Alimento pedigree para caninos viejos, Etapa 3.</p>
+		<div class="price">15,000CLP</div>
+		<div class="buttons">
+		   <a href="{% url 'alimentos'%}" class="buy">Comprar</a>
+		</div>
+	 </div>
+	 
+	 <div class="preview" data-target="p-4">
+		<i class="fas fa-times"></i> <!--Boton para cerrar Pop up-->
+		<h3>Filhotes Cachorro Pedigree</h3>
+		<p>Alimento enlatado pedigree para cachorros.</p>
+		<div class="price">9,000CLP</div>
+		<div class="buttons">
+		   <a href="{% url 'alimentos'%}" class="buy">Comprar</a>
+		</div>
+	 </div>
+ 
+	 <div class="preview" data-target="p-5">
+		<i class="fas fa-times"></i> <!--Boton para cerrar Pop up-->
+		<h3>Pedigree Cachorro Etapa 1</h3>
+		<p>Alimento pedigree para cachorros jovenes, etapa 1.</p>
+		<div class="price">15,000CLP</div>
+		<div class="buttons">
+		   <a href="{% url 'alimentos'%}" class="buy">Comprar</a>
+		</div>
+	 </div>
+
+	 <div class="preview" data-target="p-6">
+		<i class="fas fa-times"></i> <!--Boton para cerrar Pop up-->
+		<h3>Churu INABA</h3>
+		<p>Bocadillo para caninos churu.</p>
+		<div class="price">15,000CLP</div>
+		<div class="buttons">
+		   <a href="{% url 'alimentos'%}" class="buy">Comprar</a>
+		</div>
+	 </div>
+
+ </div>
+    <!--Footer-->
+    <footer class="footer">
+		<div class="fontainer">
+			<div class="row">
+				<div class="footer-col">
+					<img src="{%static 'Application/pics/logo.png'%}" alt="error">
+				</div>
+				<div class="footer-col">
+					<h3>INTEGRANTES</h3>
+					<p>David Segura</p>
+					<p>Enzo Toledo</p>
+					<p>Claudio Galiano</p>  
+				</div>
+				<div class="footer-col">
+					<h3>SIGUENOS</h3>
+					<a href="https://www.facebook.com/Pelucaninadoglover" class="fa fa-facebook" target="blank"></a>
+                  	<a href="https://www.instagram.com/peluqueriacanina_doglover/" class="fa fa-instagram" target="blank"></a>
+                  	<a href="https://twitter.com/" class="fa fa-twitter" target="blank"></a>   
+				</div>
+				<div class="footer-col">
+					<h3>CONTACTOS</h3>
+					<p>Whatsapp: +56966644433</p>
+					<p>Localizacion: Carmen&nbsp;1007, Santiago&nbsp;Centro Chile</p>
+				</div>            
+			</div>
+		</div>
+	</footer>
+<div class="copyright">
+    <small>&copy; 2024 <b>Dog Lover</b> - Todos los Derechos Reservados.</small>
+	<script type="text/javascript" src="{%static 'Application/js/functions.js'%}"></script>
+</body>
+</html>
